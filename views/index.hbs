@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="mainframe">
+    <form action="/parse" method="post" id="mainform">
+      <div class="formdiv">
+        <div class="m-right">
+          <p>Какую профессию ищем?</p>
+          <input type="text" name="job-title" id="jobtitle">
+        </div>
+        <div>
+          <p>Какое количество вакансий анализировать:</p>
+          <input type="number" id="count" name="count" min="1" max="10" value="3">
+        </div>
+      </div>
+      <input type="submit" id="submit" value="Начать анализ">
+    </form>
+    <div class="display">
+      <textarea id="results" readonly name="text"></textarea>
+    </div>
+  </div>
+</div>
+<script defer src="/js/index.js"></script>
