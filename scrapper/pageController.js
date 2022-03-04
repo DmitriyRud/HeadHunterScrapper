@@ -1,10 +1,10 @@
 const pageScraper = require('./pageScraper');
-async function scrapeAll(browserInstance, url, count){
+async function scrapeAll(browserInstance, params){
   
 	let browser;
 	try{
 		browser = await browserInstance;
-		await pageScraper.scraper(browser, url, count);	
+		await pageScraper.scraper(browser, params);	
 		
 	}
 	catch(err){
@@ -12,4 +12,4 @@ async function scrapeAll(browserInstance, url, count){
 	}
 }
 
-module.exports = (browserInstance, url, count) => scrapeAll(browserInstance, url, count);
+module.exports = (browserInstance, params) => scrapeAll(browserInstance, params);

@@ -3,15 +3,12 @@ var router = express.Router();
 const { User } = require('../db/models');
 const { checkUser, deepCheckUser } = require('../middlewares/user');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+
 
 
 /* Show login form */
 router.get('/login', (req, res)=> {
-  res.render('login');
+  res.render('users/login');
 });
 
 /* Login to user */
@@ -43,7 +40,7 @@ router.post('/', async(req, res)=> {
   req.session.userName = user.name; // Add user details to session
   req.session.userEmail = user.email;
   req.session.userId = user.id;
-  res.redirect(`/users/${user.id}`); // Redirect to user profile
+  res.redirect(`/`); // Redirect to user profile
 });
 
 /* Logout from current user */
@@ -58,4 +55,6 @@ router.get('/:id', checkUser, deepCheckUser, async(req, res)=> {
   const user = await User.findByPk(req.params.id);
   res.render('users/profile', { user });
 });
+
+
 module.exports = router;

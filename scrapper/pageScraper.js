@@ -13,7 +13,8 @@ function rand() {
 
 const scraperObject = {
   // url: `https://hh.ru/search/vacancy?clusters=true&area=1&ored_clusters=true&enable_snippets=true&salary=&text=Javascript`,
-  async scraper(browser, url, count) {
+  async scraper(browser, params) {
+    const {url, count, countSkills} = params;
     const jobUrl = `https://hh.ru/search/vacancy?clusters=true&area=1&ored_clusters=true&enable_snippets=true&salary=&text=${url}`;
     let page = await browser.newPage();
     console.log(`Navigating to ${jobUrl}...`);
@@ -76,11 +77,12 @@ const scraperObject = {
     /* Analizing received data */
     let wordsObj = {};
     for (let i = 0; i < scrapedData.length; i++) {
-      let wordsArr = scrapedData[i].description.replace(/[^a-zа-яА-Я0-9\s]/gmi, ' ').toUpperCase().split(/[\s\n!?, \/ \( \) :;•]/gmi).filter(el => (el !== '') && (el !== '–') && !(+el));
-
+      let wordsArr = scrapedData[i].description.trim().replace(/[^a-zA-Zа-яА-Я0-9\s]/gmi, ' ').toUpperCase().split(/[\s\n!?, \/ \( \) :;•]/gmi).filter(el => (el !== '') && (el !== '–') && !(+el));
+      //console.log(wordsArr);
       for (let j = 0; j < wordsArr.length; j++) {
 
-        if (!wordsObj[wordsArr[j]]) {
+        if (!wordsObj[wordsArr[j]] ) {
+          console.log('=====>', wordsArr[j]);
           wordsObj[wordsArr[j]] = 1;
         } else {
           ++wordsObj[wordsArr[j]];
@@ -98,6 +100,7 @@ const scraperObject = {
       }
 
     }
+    //console.log(wordsObj);
   }
 }
 

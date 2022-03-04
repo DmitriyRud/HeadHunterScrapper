@@ -3,6 +3,7 @@
 const form = document.getElementById('mainform');
 const jobtitle = document.getElementById('jobtitle');
 const count = document.getElementById('count');
+const countSkills = document.getElementById('countSkills');
 const textArea = document.getElementById('results');
 
 form.addEventListener('click', async (e) => {
@@ -13,7 +14,7 @@ form.addEventListener('click', async (e) => {
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({jobtitle:jobtitle.value, count: count.value}),
+      body: JSON.stringify({jobtitle:jobtitle.value, count: count.value, countSkills: countSkills.value}),
     });
 
     if (response.ok){
@@ -23,9 +24,26 @@ form.addEventListener('click', async (e) => {
       
       console.log(skillsArr);
       skillsArr.sort((a, b)=>b.count - a.count);
+      textArea.innerHTML = '';
       for (let i = 0; i < skillsArr.length; i++){
-        const line = skillsArr[i].name + '  :  ' + skillsArr[i].count + '\n';
-        textArea.insertAdjacentText('beforeend', line);
+        //const line = skillsArr[i].name + '  :  ' + skillsArr[i].count + '\n';
+        if (i > countSkills.value - 1) break;
+        const line = `<div class="skill-line">
+          <div class="skill-name">
+            <p>${skillsArr[i].name}</p>
+          </div>
+          <div class="skill-count">
+            <p>${skillsArr[i].count}</p>
+          </div>
+          <div class="skill-controls">
+            <button class="add-to-plan">В планы</button>
+            <button class="add-to-own-skills">В свои навыки</button>
+            <button class="add-to-whitelist">В белый лист</button>
+            <button class="delete">Удалить</button>
+            <button class="add-to-blacklist">В BlackList</button>
+          </div>
+        </div>`;
+        textArea.insertAdjacentHTML('beforeend', line);
       }
 
       

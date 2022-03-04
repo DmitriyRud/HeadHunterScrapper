@@ -1,5 +1,24 @@
-<form action="/users/login" method="post">
-  <input type="text" name="email" placeholder="email">
-  <input type="text" name="password" placeholder="pasword">
-  <button>Login</button>
-</form>
+<div class="container">
+  <div class="regframe">
+    <form action="/users/login" method="post" id="mainform">
+      <div class="regformdiv">
+        
+        <div>
+          <p>Email address</p>
+        </div>
+        <div>
+          <input type="email" class="form-control" id="inputEmail" name="email" aria-describedby="emailHelp"
+            placeholder="Enter email">
+
+          <p id="emailHelp">We'll never share your email with anyone else.</p>
+        </div>
+        <div>
+          <p>Password</p>
+          <input type="password" class="form-control" id="inputPassword1" name="password" placeholder="Enter password">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</div>

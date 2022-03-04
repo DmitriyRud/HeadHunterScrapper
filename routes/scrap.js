@@ -16,7 +16,8 @@ const scraperController = require('../scrapper/pageController');
 router.post('/', async (req, res) => {
   const {
     jobtitle,
-    count
+    count,
+    countSkills,
   } = req.body;
 
 
@@ -25,10 +26,17 @@ router.post('/', async (req, res) => {
 
   const url = jobtitle; //`https://hh.ru/search/vacancy?clusters=true&area=1&ored_clusters=true&enable_snippets=true&salary=&text=${jobtitle}`;
   // Pass the browser instance to the scraper controller
-  await scraperController(browserInstance, url, count);
+  const params = {
+    url,
+    count,
+    countSkills,
+  };
+  await scraperController(browserInstance, params);
 
   const skillsArr = await AllSkill.findAll();
-  res.json({skillsArr});
+  res.json({
+    skillsArr
+  });
 });
 
 /* GET home page. */
