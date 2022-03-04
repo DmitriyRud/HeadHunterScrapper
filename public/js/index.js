@@ -4,6 +4,11 @@ const count = document.getElementById('count');
 const countSkills = document.getElementById('countSkills');
 const textArea = document.getElementById('results');
 
+//console.log(textArea.innerHTML.length);
+if (textArea.innerHTML.length > 10) {
+  textArea.style.visibility = 'visible';
+}
+
 // возвращает куки с указанным name,
 // или undefined, если ничего не найдено
 function getCookie(name) {
@@ -51,7 +56,9 @@ form.addEventListener('click', async (e) => {
         skillsArr
       } = result;
 
-      console.log(skillsArr);
+      // if (skillsArr.length > 0) textArea.style.visibility = 'visible';
+
+      // console.log(skillsArr.length);
       skillsArr.sort((a, b) => b.count - a.count);
       textArea.innerHTML = '';
       for (let i = 0; i < skillsArr.length; i++) {
@@ -73,6 +80,7 @@ form.addEventListener('click', async (e) => {
           </div>
         </div>`;
         textArea.insertAdjacentHTML('beforeend', line);
+        textArea.style.visibility = 'visible';
       }
 
 

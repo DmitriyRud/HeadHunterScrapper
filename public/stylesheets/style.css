@@ -13,15 +13,16 @@ body {
 }
 
 h2 {
+  font-family: 'Metal Mania', cursive;
   position: relative;
   margin: 30px 0 10px;
-  font-size: 4em;
+  font-size: 7em;
   color: #0e3742;
   text-transform: uppercase;
   width: 100%;
   text-align: center;
   color: #fff;
-  text-shadow: 0 0 10px #03bcf4, 0 0 20px #03bcf4, 0 0 40px #03bcf4, 0 0 80px #03bcf4, 0 0 160px #03bcf4, 0 0 400px #03bcf4;
+  text-shadow: 0 0 10px #03bcf4, 0 0 20px #03bcf4, 0 0 40px #03bcf4, 0 0 80px #03bcf4, 0 0 100px #03bcf4, 0 0 400px #03bcf4;
 }
 
 h4 {
@@ -258,7 +259,7 @@ main {
   border: 2px solid #07252d;
   border-radius: 10px;
   padding: 10px;
-
+  visibility: hidden;
 }
 
 .skill-line {
