@@ -6,7 +6,8 @@ const { AllSkill } = require('../db/models');
 
 /* GET home page. */
 router.get('/', async (req, res, next)=> {
-  
+  const countSkills = (req.cookies.countskills)? req.cookies.countskills : 10;
+  //console.log(countSkills);
   try {
   allskills = await AllSkill.findAll();
 } catch {
@@ -17,6 +18,7 @@ router.get('/', async (req, res, next)=> {
 //   return obj;
 // });
 allskills.sort((a, b)=>b.count - a.count);
+allskills.length = countSkills;
 res.render('index', {allskills});
 });
 

@@ -238,6 +238,12 @@ main {
   text-align: center;
 }
 
+#setcount {
+  min-width: 6.3em !important;
+  height: 2em;  
+  padding: 0;
+}
+
 .display {
   width: 100%;
   min-height: 10vh;

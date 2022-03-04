@@ -39,9 +39,16 @@ router.post('/', async (req, res) => {
   });
 });
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.send('scrap');
+/* GET all DB records. */
+router.get('/:name', async function (req, res, next) {
+  const name = req.params.name;
+  try {
+    const records = await AllSkill.findAll({where: {jobName : name}});
+    res.json(records);
+
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 module.exports = router;

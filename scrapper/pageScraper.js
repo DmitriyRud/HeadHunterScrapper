@@ -1,5 +1,6 @@
 const {
-  User, AllSkill
+  User,
+  AllSkill
 } = require('../db/models');
 const {
   checkUser,
@@ -14,7 +15,11 @@ function rand() {
 const scraperObject = {
   // url: `https://hh.ru/search/vacancy?clusters=true&area=1&ored_clusters=true&enable_snippets=true&salary=&text=Javascript`,
   async scraper(browser, params) {
-    const {url, count, countSkills} = params;
+    const {
+      url,
+      count,
+      countSkills
+    } = params;
     const jobUrl = `https://hh.ru/search/vacancy?clusters=true&area=1&ored_clusters=true&enable_snippets=true&salary=&text=${url}`;
     let page = await browser.newPage();
     console.log(`Navigating to ${jobUrl}...`);
@@ -40,9 +45,14 @@ const scraperObject = {
       await newPage.goto(link);
       await page.waitForTimeout(rand());
       try {
-        dataObj['jobTitle'] = await newPage.$eval('#a11y-main-content > h1 > span', text => text.textContent);
+        dataObj['vacancyName'] = await newPage.$eval('#a11y-main-content > h1 > span', text => text.textContent);
       } catch (err) {
-        dataObj['jobTitle'] = '';
+        dataObj['vacancyName'] = '';
+      }
+      try {
+        dataObj['companyName'] = await newPage.$eval('[data-qa="vacancy-company-name"] > span > span', text => text.textContent);
+      } catch (err) {
+        dataObj['companyName'] = '';
       }
       try {
         dataObj['salary'] = await newPage.$eval('[data-qa="vacancy-salary"] > span', text => text.textContent);
@@ -76,13 +86,23 @@ const scraperObject = {
 
     /* Analizing received data */
     let wordsObj = {};
+    let allRecords = await AllSkill.findAll({
+      where: {
+        jobName: url
+      }
+    });
+    for (let i = 0; i < allRecords.length; i++) {
+      wordsObj[allRecords[i].name] = allRecords[i].count;
+    }
+    //console.log(wordsObj);
+
     for (let i = 0; i < scrapedData.length; i++) {
       let wordsArr = scrapedData[i].description.trim().replace(/[^a-zA-Zа-яА-Я0-9\s]/gmi, ' ').toUpperCase().split(/[\s\n!?, \/ \( \) :;•]/gmi).filter(el => (el !== '') && (el !== '–') && !(+el));
       //console.log(wordsArr);
       for (let j = 0; j < wordsArr.length; j++) {
 
-        if (!wordsObj[wordsArr[j]] ) {
-          console.log('=====>', wordsArr[j]);
+        if (!wordsObj[wordsArr[j]]) {
+          // console.log('=====>', wordsArr[j]);
           wordsObj[wordsArr[j]] = 1;
         } else {
           ++wordsObj[wordsArr[j]];
@@ -95,12 +115,32 @@ const scraperObject = {
       for (let skill in wordsObj) {
         if (skill.search(/[a-z0-9]/gmi) >= 0) {
           //console.log(skill, ' : ', wordsObj[skill]);
-          const record = await AllSkill.create({name:skill, count: wordsObj[skill], jobName: url });
+          const found = await AllSkill.findOne({
+            where: {
+              name: skill,
+              jobName: url,
+            }
+          });
+          if (found) {
+            found.set({
+              count: wordsObj[skill],
+            });
+            await found.save();
+          } else {
+            const record = await AllSkill.create({
+              name: skill,
+              count: wordsObj[skill],
+              jobName: url,
+              // companyName: wordsObj[companyName],
+              // vacancyName: wordsObj[vacancyName],
+            });
+          };
         }
       }
 
     }
     //console.log(wordsObj);
+
   }
 }
 

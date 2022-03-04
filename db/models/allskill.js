@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   AllSkill.init({
     name: DataTypes.STRING,
     count: DataTypes.INTEGER,
-    jobName: DataTypes.STRING
+    jobName: DataTypes.STRING,
+    companyName: DataTypes.STRING,
+    vacancyName: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'AllSkill',
