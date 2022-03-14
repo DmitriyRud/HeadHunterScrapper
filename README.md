@@ -2,7 +2,7 @@
 Application for scrapping information from hh.ru website to gather information on skills, required by employers.
 
 Technologies used:
-JavaScript, Express, Sequelize, Node.JS
+JavaScript, Express, Sequelize, Node.JS, Puppeteer
 
 In the process of development.
 New features are on the way:
